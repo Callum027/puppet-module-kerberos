@@ -96,7 +96,7 @@ class kerberos::server::kdc(
   exec { "create_krb5kdc_principal":
     command => "/usr/sbin/kdb5_util -r $realm -P $master_password create -s",
     creates => "$krb5kdc_database_path",
-    require => [ File['/var/lib/krb5kdc'], File['krb5.conf'], File['kdc.conf'], Exec["initialize_dev_random"], ],
+    require => [ File['/var/lib/krb5kdc'], File['krb5.conf'], File['kdc.conf'], ],
   }
 
   # Look up our users in hiera.  Create a principal for each one listed
