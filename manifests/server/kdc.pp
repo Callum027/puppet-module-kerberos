@@ -102,7 +102,10 @@ class kerberos::server::kdc(
   # Look up our users in hiera.  Create a principal for each one listed
   # for this realm.
   $kerberos_principals = hiera("kerberos_principals", [])
-  create_resources('kerberos::addprinc',$kerberos_principals)
+  if (!is_hash($kerberos_principals))
+  {
+    create_resources('kerberos::addprinc',$kerberos_principals)
+  }
 
   # Look up our trusted realms from hiera.  Create trusted principal pairs
   # for each trusted realm that is not the realm of the current server.
