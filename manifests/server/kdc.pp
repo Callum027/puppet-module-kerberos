@@ -109,11 +109,13 @@ class kerberos::server::kdc(
   # Look up our trusted realms from hiera.  Create trusted principal pairs
   # for each trusted realm that is not the realm of the current server.
   $trusted = hiera('trusted_realms', [])
-  $trusted_realms = delete($trusted['realms'], $realm)
-  if $trusted {
-    kerberos::trust { $trusted_realms:
-      this_realm => $realm,
-      password => $trusted['password'],
+  if (is_hash($trusted)) {
+    $trusted_realms = delete($trusted['realms'], $realm)
+    if $trusted {
+      kerberos::trust { $trusted_realms:
+        this_realm => $realm,
+        password => $trusted['password'],
+      }
     }
   }
 
